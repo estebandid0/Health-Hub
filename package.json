@@ -1,0 +1,20 @@
+{
+  "name": "health-hub",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "tsx src/index.ts",
+    "setup": "tsx scripts/setup-notion.ts",
+    "authorize": "tsx scripts/authorize.ts",
+    "backfill": "tsx scripts/backfill.ts"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
