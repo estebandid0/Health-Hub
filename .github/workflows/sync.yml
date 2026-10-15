@@ -30,5 +30,7 @@ jobs:
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
           WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
           HEVY_API_KEY: ${{ secrets.HEVY_API_KEY }}
+          INBODY_LOGIN_ID: ${{ secrets.INBODY_LOGIN_ID }}
+          INBODY_LOGIN_PW: ${{ secrets.INBODY_LOGIN_PW }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
           GH_REPO: ${{ github.repository }}

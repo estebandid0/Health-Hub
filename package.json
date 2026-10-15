@@ -6,7 +6,9 @@
     "sync": "tsx src/index.ts",
     "setup": "tsx scripts/setup-notion.ts",
     "authorize": "tsx scripts/authorize.ts",
-    "backfill": "tsx scripts/backfill.ts"
+    "backfill": "tsx scripts/backfill.ts",
+    "apple": "tsx src/apple-import.ts",
+    "inbody-check": "tsx scripts/inbody-check.ts"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
@@ -16,8 +18,5 @@
     "@types/node": "^22.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
-  },
-  "allowScripts": {
-    "esbuild@0.28.2": true
   }
 }

@@ -3,11 +3,13 @@ import { inActions } from './env';
 import { syncStrava } from './sources/strava';
 import { syncHevy } from './sources/hevy';
 import { syncWithings } from './sources/withings';
+import { syncInBody } from './sources/inbody';
 
 const SOURCES = [
   ['Strava', syncStrava],
   ['Hevy', syncHevy],
   ['Withings', syncWithings],
+  ['InBody', syncInBody],
 ] as const;
 
 export async function run(since: Date) {
@@ -42,6 +44,7 @@ export async function run(since: Date) {
       'Strava': p.num(counts.Strava),
       'Hevy': p.num(counts.Hevy),
       'Withings': p.num(counts.Withings),
+      'InBody': p.num(counts.InBody),
       'Error': p.text(errors.join('\n')),
       'GitHub run': p.url(runUrl),
     },

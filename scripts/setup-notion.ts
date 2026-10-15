@@ -81,6 +81,59 @@ await create(DB.body, {
   'Group ID': num,
 });
 
+await create(DB.apple, {
+  'Day': { title: {} },
+  'Date': date,
+  'Bedtime': txt,
+  'Wake time': txt,
+  'Asleep (min)': num,
+  'Time in bed (min)': num,
+  'Deep (min)': num,
+  'Core (min)': num,
+  'REM (min)': num,
+  'Awake (min)': num,
+  'Sleep efficiency (%)': num,
+  'Fell asleep in (min)': num,
+  'Wake-ups': num,
+  'Longest awake (min)': num,
+  'First deep after (min)': num,
+  'Deep in first half (%)': num,
+  'REM in last third (%)': num,
+  'Sleeping HR': num,
+  'Lowest HR': num,
+  'Resting HR': num,
+  'HRV (ms)': num,
+  'Breathing rate': num,
+  'Blood oxygen (%)': num,
+  'Lowest blood oxygen (%)': num,
+  'Wrist temp (°C)': num,
+  'Breathing disturbances': num,
+  'VO2 max': num,
+  'Cardio recovery (bpm)': num,
+  'Date key': txt,
+}, {
+  'Sleep': 'if(empty(prop("Asleep (min)")), "", let(m, round(prop("Asleep (min)")), format(floor(m / 60)) + ":" + padStart(format(m % 60), 2, "0")))',
+});
+
+await create(DB.inbody, {
+  'Scan': { title: {} },
+  'Date': date,
+  'Weight (kg)': num,
+  'Skeletal muscle (kg)': num,
+  'Body fat (kg)': num,
+  'Body fat (%)': num,
+  'BMI': num,
+  'Total body water (kg)': num,
+  'Fat-free mass (kg)': num,
+  'Protein (kg)': num,
+  'Minerals (kg)': num,
+  'Visceral fat level': num,
+  'BMR (kcal)': num,
+  'ECW/TBW': num,
+  'InBody score': num,
+  'Scan key': txt,
+});
+
 await create(DB.log, {
   'Run': { title: {} },
   'Started': date,
@@ -92,5 +145,15 @@ await create(DB.log, {
   'Error': txt,
   'GitHub run': { url: {} },
 });
+
+// Columns added after the first setup. Adding a column that already exists changes nothing.
+async function addColumns(title: string, properties: Record<string, any>) {
+  const id = (await childDatabases())[title];
+  if (!id) return;
+  await call(() => notion.databases.update({ database_id: id, properties } as any));
+  console.log(`✓ Checked columns on ${title}`);
+}
+await addColumns(DB.workouts, { 'Avg HR': num, 'Max HR': num });
+await addColumns(DB.log, { 'Apple Health': num, 'InBody': num });
 
 console.log('\nAll set. Open your Health Hub page in Notion to see the databases.');

@@ -24,6 +24,8 @@ export const DB = {
   workouts: 'Hevy Workouts',
   sets: 'Hevy Sets',
   body: 'Withings Body',
+  apple: 'Apple Health Daily',
+  inbody: 'InBody Scans',
   log: 'Sync Log',
 } as const;
 export type DbKey = keyof typeof DB;
