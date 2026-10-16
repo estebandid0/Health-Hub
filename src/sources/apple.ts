@@ -39,11 +39,30 @@ function stageOf(value: string): Stage | undefined {
   return undefined;
 }
 
+// Block layout (no loop in the shortcut): W|<window>, then #TYPE, #START, #END, #VALUE,
+// each followed by one line per sample in the same order. Turned into Type|Start|End|Value lines.
+function toLines(text: string): string[] {
+  const all = text.split(/\r?\n/).map((x) => x.trim());
+  if (!all.includes('#TYPE')) return all;
+  const blocks: Record<string, string[]> = {};
+  const head: string[] = [];
+  let cur: string[] | null = null;
+  for (const l of all) {
+    if (/^#(TYPE|START|END|VALUE)$/.test(l)) { cur = blocks[l] = []; continue; }
+    if (!l) continue;
+    (cur ?? head).push(l);
+  }
+  const t = blocks['#TYPE'] ?? [], s = blocks['#START'] ?? [], e = blocks['#END'] ?? [], v = blocks['#VALUE'] ?? [];
+  if (new Set([t.length, s.length, e.length, v.length]).size > 1)
+    console.warn(`Apple Health: block lengths differ (type ${t.length}, start ${s.length}, end ${e.length}, value ${v.length})`);
+  return [...head, ...t.map((type, i) => `${type}|${s[i] ?? ''}|${e[i] ?? ''}|${v[i] ?? ''}`)];
+}
+
 export function parse(text: string) {
   const samples: Sample[] = [];
   const unknown = new Set<string>();
   let windowStart = 0;
-  for (const raw of text.split(/\r?\n/)) {
+  for (const raw of toLines(text)) {
     const line = raw.trim();
     if (!line) continue;
     const parts = line.split('|').map((x) => x.trim());
