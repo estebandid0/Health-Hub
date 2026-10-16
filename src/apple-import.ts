@@ -5,7 +5,8 @@ import { importApple } from './sources/apple';
 // Processes every file the iPhone uploaded to inbox/, then deletes it.
 // GitHub Actions commits the deletion, so each upload is imported once.
 const dir = 'inbox';
-const files = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.txt')).sort() : [];
+// Recursive: a date with slashes in the file name puts the upload in subfolders.
+const files = existsSync(dir) ? (readdirSync(dir, { recursive: true }) as string[]).filter((f) => f.endsWith('.txt')).sort() : [];
 
 async function main() {
   if (!files.length) { console.log('No uploads in inbox/.'); return; }
